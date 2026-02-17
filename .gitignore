@@ -1,0 +1,14 @@
+.DS_Store
+.runtime/
+.codex/ralph-audit/.runtime/
+progress.txt
+.codex/ralph-audit/progress.txt
+
+# Legacy runtime artifacts
+.last-story
+.story-attempts
+.tmp-last.md
+.prompt.md
+.model-check.log
+run.log
+events.log

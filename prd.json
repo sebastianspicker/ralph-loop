@@ -1,0 +1,1608 @@
+{
+  "$schema": "./prd.schema.json",
+  "schema_version": "1.0.0",
+  "project": "Ralph Audit Golden Template",
+  "defaults": {
+    "mode_default": "audit",
+    "max_stories_default": "all_open",
+    "model_default": "gpt-5.3",
+    "reasoning_effort_default": "high",
+    "report_dir": ".codex/ralph-audit/audit",
+    "sandbox_by_mode": {
+      "audit": "read-only",
+      "linting": "read-only",
+      "fixing": "workspace-write"
+    },
+    "lint_detection_order": [
+      "package.json scripts (lint/test)",
+      "pyproject/requirements (ruff/pytest)",
+      "go.mod (go test ./...)",
+      "Cargo.toml (cargo test)",
+      "Makefile targets (make lint/test)"
+    ]
+  },
+  "stories": [
+    {
+      "id": "AUDIT-001",
+      "title": "Repository Inventory And Operational Surface",
+      "priority": 1,
+      "mode": "audit",
+      "scope": [
+        "**/*",
+        "!**/.git/**",
+        "!**/node_modules/**",
+        "!**/vendor/**"
+      ],
+      "acceptance_criteria": [
+        "Created .codex/ralph-audit/audit/AUDIT-001-repository-inventory.md with repository inventory findings",
+        "Report summarizes high-level structure, critical entry points, and unknown areas",
+        "Report includes concrete evidence paths and risk notes"
+      ],
+      "passes": false,
+      "notes": "Passive audit only. No code changes. Detailed execution plan is defined via objective/steps/verification/out_of_scope.",
+      "objective": "Run an iterative, evidence-first deep audit for 'Repository Inventory And Operational Surface' using small scan passes and severity-based triage.",
+      "steps": [
+        {
+          "id": "S01",
+          "title": "Preflight: Scope and boundaries",
+          "actions": [
+            "Confirm active story AUDIT-001 and repository-relative scope boundaries.",
+            "Limit inspection strictly to: **/*, !**/.git/**, !**/node_modules/**, !**/vendor/**."
+          ],
+          "expected_evidence": [
+            "Scope-boundary statement in report method section.",
+            "List of included/excluded areas for this pass."
+          ],
+          "done_when": [
+            "Audit boundary is explicit and reproducible."
+          ]
+        },
+        {
+          "id": "S02",
+          "title": "Inventory pass: Files and entry points",
+          "actions": [
+            "Enumerate repository structure and identify runtime/automation entry points.",
+            "Capture unknown ownership or unclear operational zones for follow-up."
+          ],
+          "expected_evidence": [
+            "Path-indexed inventory snapshot.",
+            "Unknown/high-risk zone shortlist."
+          ],
+          "done_when": [
+            "High-signal inspection targets are clearly identified."
+          ]
+        },
+        {
+          "id": "S03",
+          "title": "Deep scan pass A: Broken logic and will-break patterns",
+          "actions": [
+            "Inspect line-by-line for broken logic, invalid assumptions, and fragile runtime behavior.",
+            "Capture potential will-break issues with concrete path evidence."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged as broken-logic/will-break.",
+            "Evidence references with file paths and lines where possible."
+          ],
+          "done_when": [
+            "All high-risk logic defects are captured or explicitly ruled out."
+          ]
+        },
+        {
+          "id": "S04",
+          "title": "Deep scan pass B: Unfinished, stubs, skeleton code",
+          "actions": [
+            "Look for TODO/FIXME/HACK markers, placeholders, partial implementations, and fake/stub responses.",
+            "Record incomplete behavior and latent feature gaps."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged unfinished/stub/skeleton.",
+            "Examples with code-location context."
+          ],
+          "done_when": [
+            "Incomplete implementations are explicitly documented."
+          ]
+        },
+        {
+          "id": "S05",
+          "title": "Deep scan pass C: Dead ends, slop, duplication",
+          "actions": [
+            "Identify dead code paths, orphaned exports/files, copy-paste duplication, and excessive complexity.",
+            "Flag maintainability risks that likely amplify defects over time."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged dead-end/slop.",
+            "Noted hotspots for complexity or duplication."
+          ],
+          "done_when": [
+            "Maintainability findings are concrete and prioritized."
+          ]
+        },
+        {
+          "id": "S06",
+          "title": "Triage pass: Severity and impact classification",
+          "actions": [
+            "Consolidate findings and assign severity by impact and confidence.",
+            "Deduplicate overlapping findings while preserving evidence."
+          ],
+          "expected_evidence": [
+            "Severity-sorted finding ledger.",
+            "Deduped issue set with no contradictory entries."
+          ],
+          "done_when": [
+            "Findings are ordered and ready for stakeholder consumption."
+          ]
+        },
+        {
+          "id": "S07",
+          "title": "Quality gate: Contract and safety checks",
+          "actions": [
+            "Cross-check acceptance criteria and ensure report output contract is satisfied.",
+            "Ensure no secret/raw sensitive values are exposed in findings text."
+          ],
+          "expected_evidence": [
+            "Acceptance criteria coverage checklist.",
+            "Redaction/safety confirmation note."
+          ],
+          "done_when": [
+            "Report is contract-compliant and safe to persist."
+          ]
+        },
+        {
+          "id": "S08",
+          "title": "Finalize report for iterative handoff",
+          "actions": [
+            "Publish concise context, method, findings, risks, and next-step signals.",
+            "Ensure output can feed directly into subsequent linting/fixing stories."
+          ],
+          "expected_evidence": [
+            "Deterministic markdown report body.",
+            "Clear transition notes for next iteration."
+          ],
+          "done_when": [
+            "Report is complete and iteration-ready."
+          ]
+        }
+      ],
+      "verification": [
+        "Findings are evidence-backed with concrete paths and line anchors where possible.",
+        "Broken-logic, unfinished/stub, dead-end/slop, and will-break categories were checked explicitly.",
+        "Severity ordering is explicit and auditable.",
+        "No repository modifications were performed."
+      ],
+      "out_of_scope": [
+        "Editing repository files.",
+        "Behavior-changing implementation work.",
+        "Speculative claims without evidence."
+      ]
+    },
+    {
+      "id": "AUDIT-002",
+      "title": "Documentation And Onboarding Coverage Review",
+      "priority": 2,
+      "mode": "audit",
+      "scope": [
+        "README*",
+        "**/*.md",
+        "docs/**"
+      ],
+      "acceptance_criteria": [
+        "Created .codex/ralph-audit/audit/AUDIT-002-docs-onboarding-review.md with documentation findings",
+        "Report identifies missing, stale, or conflicting guidance",
+        "Report prioritizes gaps by operational impact"
+      ],
+      "passes": false,
+      "notes": "Passive audit only. No edits. Detailed execution plan is defined via objective/steps/verification/out_of_scope.",
+      "objective": "Run an iterative, evidence-first deep audit for 'Documentation And Onboarding Coverage Review' using small scan passes and severity-based triage.",
+      "steps": [
+        {
+          "id": "S01",
+          "title": "Preflight: Scope and boundaries",
+          "actions": [
+            "Confirm active story AUDIT-002 and repository-relative scope boundaries.",
+            "Limit inspection strictly to: README*, **/*.md, docs/**."
+          ],
+          "expected_evidence": [
+            "Scope-boundary statement in report method section.",
+            "List of included/excluded areas for this pass."
+          ],
+          "done_when": [
+            "Audit boundary is explicit and reproducible."
+          ]
+        },
+        {
+          "id": "S02",
+          "title": "Inventory pass: Files and entry points",
+          "actions": [
+            "Enumerate files/dirs inside scope and identify operationally relevant entry points.",
+            "Record unknown or high-risk zones that require deeper scan attention."
+          ],
+          "expected_evidence": [
+            "Path-indexed inventory snapshot.",
+            "Unknown/high-risk zone shortlist."
+          ],
+          "done_when": [
+            "High-signal inspection targets are clearly identified."
+          ]
+        },
+        {
+          "id": "S03",
+          "title": "Deep scan pass A: Broken logic and will-break patterns",
+          "actions": [
+            "Inspect docs for conflicting onboarding commands and outdated setup guidance.",
+            "Capture breakpoints where newcomers/operators are likely to fail."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged as broken-logic/will-break.",
+            "Evidence references with file paths and lines where possible."
+          ],
+          "done_when": [
+            "All high-risk logic defects are captured or explicitly ruled out."
+          ]
+        },
+        {
+          "id": "S04",
+          "title": "Deep scan pass B: Unfinished, stubs, skeleton code",
+          "actions": [
+            "Look for TODO/FIXME/HACK markers, placeholders, partial implementations, and fake/stub responses.",
+            "Record incomplete behavior and latent feature gaps."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged unfinished/stub/skeleton.",
+            "Examples with code-location context."
+          ],
+          "done_when": [
+            "Incomplete implementations are explicitly documented."
+          ]
+        },
+        {
+          "id": "S05",
+          "title": "Deep scan pass C: Dead ends, slop, duplication",
+          "actions": [
+            "Identify dead code paths, orphaned exports/files, copy-paste duplication, and excessive complexity.",
+            "Flag maintainability risks that likely amplify defects over time."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged dead-end/slop.",
+            "Noted hotspots for complexity or duplication."
+          ],
+          "done_when": [
+            "Maintainability findings are concrete and prioritized."
+          ]
+        },
+        {
+          "id": "S06",
+          "title": "Triage pass: Severity and impact classification",
+          "actions": [
+            "Consolidate findings and assign severity by impact and confidence.",
+            "Deduplicate overlapping findings while preserving evidence."
+          ],
+          "expected_evidence": [
+            "Severity-sorted finding ledger.",
+            "Deduped issue set with no contradictory entries."
+          ],
+          "done_when": [
+            "Findings are ordered and ready for stakeholder consumption."
+          ]
+        },
+        {
+          "id": "S07",
+          "title": "Quality gate: Contract and safety checks",
+          "actions": [
+            "Cross-check acceptance criteria and ensure report output contract is satisfied.",
+            "Ensure no secret/raw sensitive values are exposed in findings text."
+          ],
+          "expected_evidence": [
+            "Acceptance criteria coverage checklist.",
+            "Redaction/safety confirmation note."
+          ],
+          "done_when": [
+            "Report is contract-compliant and safe to persist."
+          ]
+        },
+        {
+          "id": "S08",
+          "title": "Finalize report for iterative handoff",
+          "actions": [
+            "Publish concise context, method, findings, risks, and next-step signals.",
+            "Ensure output can feed directly into subsequent linting/fixing stories."
+          ],
+          "expected_evidence": [
+            "Deterministic markdown report body.",
+            "Clear transition notes for next iteration."
+          ],
+          "done_when": [
+            "Report is complete and iteration-ready."
+          ]
+        }
+      ],
+      "verification": [
+        "Findings are evidence-backed with concrete paths and line anchors where possible.",
+        "Broken-logic, unfinished/stub, dead-end/slop, and will-break categories were checked explicitly.",
+        "Severity ordering is explicit and auditable.",
+        "No repository modifications were performed."
+      ],
+      "out_of_scope": [
+        "Editing repository files.",
+        "Behavior-changing implementation work.",
+        "Speculative claims without evidence."
+      ]
+    },
+    {
+      "id": "AUDIT-003",
+      "title": "Passive Secret Exposure And Sensitive Data Scan",
+      "priority": 3,
+      "mode": "audit",
+      "scope": [
+        "**/*",
+        ".env*",
+        "**/*.pem",
+        "**/*.key",
+        "**/*.p12",
+        "**/*.crt",
+        "**/*.yaml",
+        "**/*.yml",
+        "**/*.json"
+      ],
+      "acceptance_criteria": [
+        "Created .codex/ralph-audit/audit/AUDIT-003-passive-secrets-scan.md with passive secret-exposure findings",
+        "Report avoids printing raw secret values and uses redacted examples only",
+        "Report includes file paths, risk levels, and remediation guidance"
+      ],
+      "passes": false,
+      "notes": "Read-only scan. No exploit attempts. Detailed execution plan is defined via objective/steps/verification/out_of_scope.",
+      "objective": "Run an iterative, evidence-first deep audit for 'Passive Secret Exposure And Sensitive Data Scan' using small scan passes and severity-based triage.",
+      "steps": [
+        {
+          "id": "S01",
+          "title": "Preflight: Scope and boundaries",
+          "actions": [
+            "Confirm active story AUDIT-003 and repository-relative scope boundaries.",
+            "Limit inspection strictly to: **/*, .env*, **/*.pem, **/*.key, **/*.p12, **/*.crt."
+          ],
+          "expected_evidence": [
+            "Scope-boundary statement in report method section.",
+            "List of included/excluded areas for this pass."
+          ],
+          "done_when": [
+            "Audit boundary is explicit and reproducible."
+          ]
+        },
+        {
+          "id": "S02",
+          "title": "Inventory pass: Files and entry points",
+          "actions": [
+            "Enumerate files/dirs inside scope and identify operationally relevant entry points.",
+            "Record unknown or high-risk zones that require deeper scan attention."
+          ],
+          "expected_evidence": [
+            "Path-indexed inventory snapshot.",
+            "Unknown/high-risk zone shortlist."
+          ],
+          "done_when": [
+            "High-signal inspection targets are clearly identified."
+          ]
+        },
+        {
+          "id": "S03",
+          "title": "Deep scan pass A: Broken logic and will-break patterns",
+          "actions": [
+            "Inspect line-by-line for secret-exposure patterns and unsafe credential handling.",
+            "Capture risk evidence with redacted references only (never raw values)."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged as broken-logic/will-break.",
+            "Evidence references with file paths and lines where possible."
+          ],
+          "done_when": [
+            "All high-risk logic defects are captured or explicitly ruled out."
+          ]
+        },
+        {
+          "id": "S04",
+          "title": "Deep scan pass B: Unfinished, stubs, skeleton code",
+          "actions": [
+            "Look for TODO/FIXME/HACK markers, placeholders, partial implementations, and fake/stub responses.",
+            "Record incomplete behavior and latent feature gaps."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged unfinished/stub/skeleton.",
+            "Examples with code-location context."
+          ],
+          "done_when": [
+            "Incomplete implementations are explicitly documented."
+          ]
+        },
+        {
+          "id": "S05",
+          "title": "Deep scan pass C: Dead ends, slop, duplication",
+          "actions": [
+            "Identify dead code paths, orphaned exports/files, copy-paste duplication, and excessive complexity.",
+            "Flag maintainability risks that likely amplify defects over time."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged dead-end/slop.",
+            "Noted hotspots for complexity or duplication."
+          ],
+          "done_when": [
+            "Maintainability findings are concrete and prioritized."
+          ]
+        },
+        {
+          "id": "S06",
+          "title": "Triage pass: Severity and impact classification",
+          "actions": [
+            "Consolidate findings and assign severity by impact and confidence.",
+            "Deduplicate overlapping findings while preserving evidence."
+          ],
+          "expected_evidence": [
+            "Severity-sorted finding ledger.",
+            "Deduped issue set with no contradictory entries."
+          ],
+          "done_when": [
+            "Findings are ordered and ready for stakeholder consumption."
+          ]
+        },
+        {
+          "id": "S07",
+          "title": "Quality gate: Contract and safety checks",
+          "actions": [
+            "Cross-check acceptance criteria and ensure report output contract is satisfied.",
+            "Ensure no secret/raw sensitive values are exposed in findings text."
+          ],
+          "expected_evidence": [
+            "Acceptance criteria coverage checklist.",
+            "Redaction/safety confirmation note."
+          ],
+          "done_when": [
+            "Report is contract-compliant and safe to persist."
+          ]
+        },
+        {
+          "id": "S08",
+          "title": "Finalize report for iterative handoff",
+          "actions": [
+            "Publish concise context, method, findings, risks, and next-step signals.",
+            "Ensure output can feed directly into subsequent linting/fixing stories."
+          ],
+          "expected_evidence": [
+            "Deterministic markdown report body.",
+            "Clear transition notes for next iteration."
+          ],
+          "done_when": [
+            "Report is complete and iteration-ready."
+          ]
+        }
+      ],
+      "verification": [
+        "Findings are evidence-backed with concrete paths and line anchors where possible.",
+        "Broken-logic, unfinished/stub, dead-end/slop, and will-break categories were checked explicitly.",
+        "Severity ordering is explicit and auditable.",
+        "No repository modifications were performed."
+      ],
+      "out_of_scope": [
+        "Editing repository files.",
+        "Behavior-changing implementation work.",
+        "Speculative claims without evidence."
+      ]
+    },
+    {
+      "id": "AUDIT-004",
+      "title": "Dependency And Automation Surface Overview",
+      "priority": 4,
+      "mode": "audit",
+      "scope": [
+        "**/package.json",
+        "**/pyproject.toml",
+        "**/requirements*.txt",
+        "**/go.mod",
+        "**/Cargo.toml",
+        "**/Makefile",
+        "**/.github/workflows/**",
+        "**/.gitlab-ci.yml",
+        "**/Jenkinsfile"
+      ],
+      "acceptance_criteria": [
+        "Created .codex/ralph-audit/audit/AUDIT-004-dependency-automation-overview.md with dependency and automation findings",
+        "Report lists detected build/test ecosystems and maintenance risks",
+        "Report flags obvious drift risks and missing ownership signals"
+      ],
+      "passes": false,
+      "notes": "Passive audit only. Detailed execution plan is defined via objective/steps/verification/out_of_scope.",
+      "objective": "Run an iterative, evidence-first deep audit for 'Dependency And Automation Surface Overview' using small scan passes and severity-based triage.",
+      "steps": [
+        {
+          "id": "S01",
+          "title": "Preflight: Scope and boundaries",
+          "actions": [
+            "Confirm active story AUDIT-004 and repository-relative scope boundaries.",
+            "Limit inspection strictly to: **/package.json, **/pyproject.toml, **/requirements*.txt, **/go.mod, **/Cargo.toml, **/Makefile."
+          ],
+          "expected_evidence": [
+            "Scope-boundary statement in report method section.",
+            "List of included/excluded areas for this pass."
+          ],
+          "done_when": [
+            "Audit boundary is explicit and reproducible."
+          ]
+        },
+        {
+          "id": "S02",
+          "title": "Inventory pass: Files and entry points",
+          "actions": [
+            "Inventory dependency manifests and automation workflows in scope.",
+            "Record ecosystem boundaries (Node/Python/Go/Rust/CI) and drift hotspots."
+          ],
+          "expected_evidence": [
+            "Path-indexed inventory snapshot.",
+            "Unknown/high-risk zone shortlist."
+          ],
+          "done_when": [
+            "High-signal inspection targets are clearly identified."
+          ]
+        },
+        {
+          "id": "S03",
+          "title": "Deep scan pass A: Broken logic and will-break patterns",
+          "actions": [
+            "Inspect line-by-line for broken logic, invalid assumptions, and fragile runtime behavior.",
+            "Capture potential will-break issues with concrete path evidence."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged as broken-logic/will-break.",
+            "Evidence references with file paths and lines where possible."
+          ],
+          "done_when": [
+            "All high-risk logic defects are captured or explicitly ruled out."
+          ]
+        },
+        {
+          "id": "S04",
+          "title": "Deep scan pass B: Unfinished, stubs, skeleton code",
+          "actions": [
+            "Look for TODO/FIXME/HACK markers, placeholders, partial implementations, and fake/stub responses.",
+            "Record incomplete behavior and latent feature gaps."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged unfinished/stub/skeleton.",
+            "Examples with code-location context."
+          ],
+          "done_when": [
+            "Incomplete implementations are explicitly documented."
+          ]
+        },
+        {
+          "id": "S05",
+          "title": "Deep scan pass C: Dead ends, slop, duplication",
+          "actions": [
+            "Identify dead code paths, orphaned exports/files, copy-paste duplication, and excessive complexity.",
+            "Flag maintainability risks that likely amplify defects over time."
+          ],
+          "expected_evidence": [
+            "Finding candidates tagged dead-end/slop.",
+            "Noted hotspots for complexity or duplication."
+          ],
+          "done_when": [
+            "Maintainability findings are concrete and prioritized."
+          ]
+        },
+        {
+          "id": "S06",
+          "title": "Triage pass: Severity and impact classification",
+          "actions": [
+            "Consolidate findings and assign severity by impact and confidence.",
+            "Deduplicate overlapping findings while preserving evidence."
+          ],
+          "expected_evidence": [
+            "Severity-sorted finding ledger.",
+            "Deduped issue set with no contradictory entries."
+          ],
+          "done_when": [
+            "Findings are ordered and ready for stakeholder consumption."
+          ]
+        },
+        {
+          "id": "S07",
+          "title": "Quality gate: Contract and safety checks",
+          "actions": [
+            "Cross-check acceptance criteria and ensure report output contract is satisfied.",
+            "Ensure no secret/raw sensitive values are exposed in findings text."
+          ],
+          "expected_evidence": [
+            "Acceptance criteria coverage checklist.",
+            "Redaction/safety confirmation note."
+          ],
+          "done_when": [
+            "Report is contract-compliant and safe to persist."
+          ]
+        },
+        {
+          "id": "S08",
+          "title": "Finalize report for iterative handoff",
+          "actions": [
+            "Publish concise context, method, findings, risks, and next-step signals.",
+            "Ensure output can feed directly into subsequent linting/fixing stories."
+          ],
+          "expected_evidence": [
+            "Deterministic markdown report body.",
+            "Clear transition notes for next iteration."
+          ],
+          "done_when": [
+            "Report is complete and iteration-ready."
+          ]
+        }
+      ],
+      "verification": [
+        "Findings are evidence-backed with concrete paths and line anchors where possible.",
+        "Broken-logic, unfinished/stub, dead-end/slop, and will-break categories were checked explicitly.",
+        "Severity ordering is explicit and auditable.",
+        "No repository modifications were performed."
+      ],
+      "out_of_scope": [
+        "Editing repository files.",
+        "Behavior-changing implementation work.",
+        "Speculative claims without evidence."
+      ]
+    },
+    {
+      "id": "LINT-001",
+      "title": "Auto-Detect And Execute Best-Effort Checks",
+      "priority": 10,
+      "mode": "linting",
+      "scope": [
+        "**/*"
+      ],
+      "acceptance_criteria": [
+        "Created .codex/ralph-audit/audit/LINT-001-best-effort-checks.md with command execution summary",
+        "Report lists detected commands, execution status, and key output excerpts",
+        "If no checks are detected, report explicitly states no-op with rationale"
+      ],
+      "passes": false,
+      "notes": "Read-only mode. No repository edits. Detailed execution plan is defined via objective/steps/verification/out_of_scope.",
+      "objective": "Run linting iteratively in small command-analysis passes for 'Auto-Detect And Execute Best-Effort Checks', with reproducible outcomes and clear triage.",
+      "steps": [
+        {
+          "id": "S01",
+          "title": "Preflight: Resolve check surface",
+          "actions": [
+            "Collect runner-detected best-effort commands for LINT-001.",
+            "If no commands are detected, prepare explicit no-op execution rationale."
+          ],
+          "expected_evidence": [
+            "Detected command list or no-op declaration.",
+            "Read-only execution boundaries documented."
+          ],
+          "done_when": [
+            "Execution set is explicit before command runs start."
+          ]
+        },
+        {
+          "id": "S02",
+          "title": "Execution plan: Order and prerequisites",
+          "actions": [
+            "Define deterministic command order and note missing dependencies/tooling.",
+            "Record constraints that may affect reproducibility."
+          ],
+          "expected_evidence": [
+            "Ordered command plan.",
+            "Prerequisite and environment caveat list."
+          ],
+          "done_when": [
+            "Every command has an execution or skip reason."
+          ]
+        },
+        {
+          "id": "S03",
+          "title": "Run pass A: First half of command set",
+          "actions": [
+            "Execute first subset of detected lint/test commands in read-only mode.",
+            "Capture exit status and concise, high-signal output excerpts."
+          ],
+          "expected_evidence": [
+            "Per-command status entries for pass A.",
+            "Failure snippets/errors with context."
+          ],
+          "done_when": [
+            "Pass A outcomes are fully logged in report notes."
+          ]
+        },
+        {
+          "id": "S04",
+          "title": "Run pass B: Remaining command set",
+          "actions": [
+            "Execute remaining command subset sequentially.",
+            "Capture status and key outputs with same structure as pass A."
+          ],
+          "expected_evidence": [
+            "Per-command status entries for pass B.",
+            "Symmetric reporting structure across all commands."
+          ],
+          "done_when": [
+            "All detected checks have consistent outcome reporting."
+          ]
+        },
+        {
+          "id": "S05",
+          "title": "Analysis pass: Failure classification",
+          "actions": [
+            "Group failures by severity, subsystem, and probable impact.",
+            "Separate tooling/setup failures from code-quality failures."
+          ],
+          "expected_evidence": [
+            "Classified failure groups.",
+            "Impact-oriented failure summary."
+          ],
+          "done_when": [
+            "Failure triage order is defensible and explicit."
+          ]
+        },
+        {
+          "id": "S06",
+          "title": "Reproducibility pass: Re-runability notes",
+          "actions": [
+            "Document reproducibility details: commands, assumptions, and blockers.",
+            "Map likely ownership areas via path/package context where possible."
+          ],
+          "expected_evidence": [
+            "Repro checklist and ownership hints.",
+            "Known uncertainty markers where evidence is incomplete."
+          ],
+          "done_when": [
+            "Another engineer can reproduce key outcomes quickly."
+          ]
+        },
+        {
+          "id": "S07",
+          "title": "Parity pass: Local vs CI alignment",
+          "actions": [
+            "Quickly note likely local-vs-CI parity risks relevant to this linting story.",
+            "Flag drift sources (versions, setup, workflow differences)."
+          ],
+          "expected_evidence": [
+            "Parity notes with mismatch/drift indicators.",
+            "Drift-risk shortlist for fixing follow-up."
+          ],
+          "done_when": [
+            "Parity status is clear enough for follow-up action."
+          ]
+        },
+        {
+          "id": "S08",
+          "title": "Finalize linting report",
+          "actions": [
+            "Publish deterministic report with command summary, findings, risks, and next steps.",
+            "Ensure no repository edits were performed."
+          ],
+          "expected_evidence": [
+            "Final markdown report body.",
+            "Explicit no-edit confirmation."
+          ],
+          "done_when": [
+            "Linting report is complete and iteration-ready."
+          ]
+        }
+      ],
+      "verification": [
+        "Detected check set is explicit (or no-op is explicitly justified).",
+        "Every attempted command has status and key evidence.",
+        "Failures are classified by impact and reproducibility notes are included.",
+        "No repository modifications were performed."
+      ],
+      "out_of_scope": [
+        "Editing repository files.",
+        "Behavior-changing implementation work.",
+        "Speculative claims without evidence."
+      ]
+    },
+    {
+      "id": "LINT-002",
+      "title": "Failure Classification And Triage Baseline",
+      "priority": 11,
+      "mode": "linting",
+      "scope": [
+        "**/*"
+      ],
+      "acceptance_criteria": [
+        "Created .codex/ralph-audit/audit/LINT-002-failure-triage-baseline.md with classified check results",
+        "Report groups failures by severity and probable impact",
+        "Report includes reproducibility notes and suspected ownership areas"
+      ],
+      "passes": false,
+      "notes": "Read-only mode. Focus on classification quality. Detailed execution plan is defined via objective/steps/verification/out_of_scope.",
+      "objective": "Run linting iteratively in small command-analysis passes for 'Failure Classification And Triage Baseline', with reproducible outcomes and clear triage.",
+      "steps": [
+        {
+          "id": "S01",
+          "title": "Preflight: Resolve check surface",
+          "actions": [
+            "Collect runner-detected best-effort commands for LINT-002.",
+            "If no commands are detected, prepare explicit no-op execution rationale."
+          ],
+          "expected_evidence": [
+            "Detected command list or no-op declaration.",
+            "Read-only execution boundaries documented."
+          ],
+          "done_when": [
+            "Execution set is explicit before command runs start."
+          ]
+        },
+        {
+          "id": "S02",
+          "title": "Execution plan: Order and prerequisites",
+          "actions": [
+            "Define deterministic command order and note missing dependencies/tooling.",
+            "Record constraints that may affect reproducibility."
+          ],
+          "expected_evidence": [
+            "Ordered command plan.",
+            "Prerequisite and environment caveat list."
+          ],
+          "done_when": [
+            "Every command has an execution or skip reason."
+          ]
+        },
+        {
+          "id": "S03",
+          "title": "Run pass A: First half of command set",
+          "actions": [
+            "Execute first command subset sequentially.",
+            "Capture exit status and concise high-signal output excerpts."
+          ],
+          "expected_evidence": [
+            "Per-command status entries for pass A.",
+            "Failure snippets/errors with context."
+          ],
+          "done_when": [
+            "Pass A outcomes are fully logged in report notes."
+          ]
+        },
+        {
+          "id": "S04",
+          "title": "Run pass B: Remaining command set",
+          "actions": [
+            "Execute remaining command subset sequentially.",
+            "Capture status and key outputs with same structure as pass A."
+          ],
+          "expected_evidence": [
+            "Per-command status entries for pass B.",
+            "Symmetric reporting structure across all commands."
+          ],
+          "done_when": [
+            "All detected checks have consistent outcome reporting."
+          ]
+        },
+        {
+          "id": "S05",
+          "title": "Analysis pass: Failure classification",
+          "actions": [
+            "Classify failures by severity and probable product/runtime impact.",
+            "Separate setup/tooling noise from true code-level quality defects."
+          ],
+          "expected_evidence": [
+            "Classified failure groups.",
+            "Impact-oriented failure summary."
+          ],
+          "done_when": [
+            "Failure triage order is defensible and explicit."
+          ]
+        },
+        {
+          "id": "S06",
+          "title": "Reproducibility pass: Re-runability notes",
+          "actions": [
+            "Document reproducibility details: commands, assumptions, and blockers.",
+            "Map likely ownership areas via path/package context where possible."
+          ],
+          "expected_evidence": [
+            "Repro checklist and ownership hints.",
+            "Known uncertainty markers where evidence is incomplete."
+          ],
+          "done_when": [
+            "Another engineer can reproduce key outcomes quickly."
+          ]
+        },
+        {
+          "id": "S07",
+          "title": "Parity pass: Local vs CI alignment",
+          "actions": [
+            "Quickly note likely local-vs-CI parity risks relevant to this linting story.",
+            "Flag drift sources (versions, setup, workflow differences)."
+          ],
+          "expected_evidence": [
+            "Parity notes with mismatch/drift indicators.",
+            "Drift-risk shortlist for fixing follow-up."
+          ],
+          "done_when": [
+            "Parity status is clear enough for follow-up action."
+          ]
+        },
+        {
+          "id": "S08",
+          "title": "Finalize linting report",
+          "actions": [
+            "Publish deterministic report with command summary, findings, risks, and next steps.",
+            "Ensure no repository edits were performed."
+          ],
+          "expected_evidence": [
+            "Final markdown report body.",
+            "Explicit no-edit confirmation."
+          ],
+          "done_when": [
+            "Linting report is complete and iteration-ready."
+          ]
+        }
+      ],
+      "verification": [
+        "Detected check set is explicit (or no-op is explicitly justified).",
+        "Every attempted command has status and key evidence.",
+        "Failures are classified by impact and reproducibility notes are included.",
+        "No repository modifications were performed."
+      ],
+      "out_of_scope": [
+        "Editing repository files.",
+        "Behavior-changing implementation work.",
+        "Speculative claims without evidence."
+      ]
+    },
+    {
+      "id": "LINT-003",
+      "title": "CI Parity And Reproducibility Notes",
+      "priority": 12,
+      "mode": "linting",
+      "scope": [
+        "**/.github/workflows/**",
+        "**/.gitlab-ci.yml",
+        "**/Jenkinsfile",
+        "**/azure-pipelines.yml",
+        "**/Makefile",
+        "**/*"
+      ],
+      "acceptance_criteria": [
+        "Created .codex/ralph-audit/audit/LINT-003-ci-parity-notes.md with CI parity findings",
+        "Report compares local best-effort checks with CI-declared checks",
+        "Report highlights likely mismatches and missing reproducibility controls"
+      ],
+      "passes": false,
+      "notes": "Read-only mode. Detailed execution plan is defined via objective/steps/verification/out_of_scope.",
+      "objective": "Run linting iteratively in small command-analysis passes for 'CI Parity And Reproducibility Notes', with reproducible outcomes and clear triage.",
+      "steps": [
+        {
+          "id": "S01",
+          "title": "Preflight: Resolve check surface",
+          "actions": [
+            "Collect runner-detected best-effort commands for LINT-003.",
+            "If no commands are detected, prepare explicit no-op execution rationale."
+          ],
+          "expected_evidence": [
+            "Detected command list or no-op declaration.",
+            "Read-only execution boundaries documented."
+          ],
+          "done_when": [
+            "Execution set is explicit before command runs start."
+          ]
+        },
+        {
+          "id": "S02",
+          "title": "Execution plan: Order and prerequisites",
+          "actions": [
+            "Define deterministic command order and note missing dependencies/tooling.",
+            "Record constraints that may affect reproducibility."
+          ],
+          "expected_evidence": [
+            "Ordered command plan.",
+            "Prerequisite and environment caveat list."
+          ],
+          "done_when": [
+            "Every command has an execution or skip reason."
+          ]
+        },
+        {
+          "id": "S03",
+          "title": "Run pass A: First half of command set",
+          "actions": [
+            "Execute first command subset sequentially.",
+            "Capture exit status and concise high-signal output excerpts."
+          ],
+          "expected_evidence": [
+            "Per-command status entries for pass A.",
+            "Failure snippets/errors with context."
+          ],
+          "done_when": [
+            "Pass A outcomes are fully logged in report notes."
+          ]
+        },
+        {
+          "id": "S04",
+          "title": "Run pass B: Remaining command set",
+          "actions": [
+            "Execute remaining command subset sequentially.",
+            "Capture status and key outputs with same structure as pass A."
+          ],
+          "expected_evidence": [
+            "Per-command status entries for pass B.",
+            "Symmetric reporting structure across all commands."
+          ],
+          "done_when": [
+            "All detected checks have consistent outcome reporting."
+          ]
+        },
+        {
+          "id": "S05",
+          "title": "Analysis pass: Failure classification",
+          "actions": [
+            "Group failures by severity, subsystem, and probable impact.",
+            "Separate tooling/setup failures from code-quality failures."
+          ],
+          "expected_evidence": [
+            "Classified failure groups.",
+            "Impact-oriented failure summary."
+          ],
+          "done_when": [
+            "Failure triage order is defensible and explicit."
+          ]
+        },
+        {
+          "id": "S06",
+          "title": "Reproducibility pass: Re-runability notes",
+          "actions": [
+            "Document reproducibility details: commands, assumptions, and blockers.",
+            "Map likely ownership areas via path/package context where possible."
+          ],
+          "expected_evidence": [
+            "Repro checklist and ownership hints.",
+            "Known uncertainty markers where evidence is incomplete."
+          ],
+          "done_when": [
+            "Another engineer can reproduce key outcomes quickly."
+          ]
+        },
+        {
+          "id": "S07",
+          "title": "Parity pass: Local vs CI alignment",
+          "actions": [
+            "Map local best-effort checks against CI-declared checks and mark mismatches.",
+            "Highlight likely root causes (version skew, missing setup, workflow drift)."
+          ],
+          "expected_evidence": [
+            "Parity notes with mismatch/drift indicators.",
+            "Drift-risk shortlist for fixing follow-up."
+          ],
+          "done_when": [
+            "Parity status is clear enough for follow-up action."
+          ]
+        },
+        {
+          "id": "S08",
+          "title": "Finalize linting report",
+          "actions": [
+            "Publish deterministic report with command summary, findings, risks, and next steps.",
+            "Ensure no repository edits were performed."
+          ],
+          "expected_evidence": [
+            "Final markdown report body.",
+            "Explicit no-edit confirmation."
+          ],
+          "done_when": [
+            "Linting report is complete and iteration-ready."
+          ]
+        }
+      ],
+      "verification": [
+        "Detected check set is explicit (or no-op is explicitly justified).",
+        "Every attempted command has status and key evidence.",
+        "Failures are classified by impact and reproducibility notes are included.",
+        "No repository modifications were performed."
+      ],
+      "out_of_scope": [
+        "Editing repository files.",
+        "Behavior-changing implementation work.",
+        "Speculative claims without evidence."
+      ]
+    },
+    {
+      "id": "FIX-001",
+      "title": "Safe Documentation Hygiene Fixes",
+      "priority": 20,
+      "mode": "fixing",
+      "scope": [
+        "README*",
+        "docs/**",
+        "**/*.md"
+      ],
+      "acceptance_criteria": [
+        "Created .codex/ralph-audit/audit/FIX-001-docs-hygiene-fixes.md with applied safe documentation fixes",
+        "Only small, low-risk documentation changes are applied",
+        "Report includes changed files and verification notes"
+      ],
+      "passes": false,
+      "notes": "No code behavior changes. Detailed execution plan is defined via objective/steps/verification/out_of_scope.",
+      "objective": "Run fixing iteratively in micro-fix cycles for 'Safe Documentation Hygiene Fixes', prioritizing minimal risk, strict scope, and validated closure.",
+      "steps": [
+        {
+          "id": "S01",
+          "title": "Preflight: Select smallest fix slice",
+          "actions": [
+            "Choose the minimal high-confidence defect slice for FIX-001.",
+            "Defer larger or ambiguous changes to later iterations."
+          ],
+          "expected_evidence": [
+            "Scoped micro-fix target list.",
+            "Rationale for deferred items."
+          ],
+          "done_when": [
+            "Planned fix batch is intentionally small and safe."
+          ]
+        },
+        {
+          "id": "S02",
+          "title": "Boundary gate: Scope and risk constraints",
+          "actions": [
+            "Reconfirm allowed edit scope: README*, docs/**, **/*.md.",
+            "Lock out broad refactors and architecture/security redesign work."
+          ],
+          "expected_evidence": [
+            "Scope/risk gate statement.",
+            "Explicit non-goals for this fix iteration."
+          ],
+          "done_when": [
+            "Edit boundary is precise before making changes."
+          ]
+        },
+        {
+          "id": "S03",
+          "title": "Fix cycle 1: Apply first micro-change",
+          "actions": [
+            "Apply the first documentation-only micro-fix with minimal textual churn.",
+            "Avoid introducing new policy/process claims not grounded in current repo evidence."
+          ],
+          "expected_evidence": [
+            "Changed file and short rationale for cycle 1.",
+            "No out-of-scope edits in cycle 1."
+          ],
+          "done_when": [
+            "First defect slice is resolved or explicitly blocked."
+          ]
+        },
+        {
+          "id": "S04",
+          "title": "Fix cycle 1 validation",
+          "actions": [
+            "Run targeted check(s) for the first change.",
+            "Capture pass/fail outcome and residual observations."
+          ],
+          "expected_evidence": [
+            "Validation result for cycle 1.",
+            "Residual note if not fully resolved."
+          ],
+          "done_when": [
+            "Cycle 1 has explicit verification evidence."
+          ]
+        },
+        {
+          "id": "S05",
+          "title": "Fix cycle 2: Apply second micro-change (if needed)",
+          "actions": [
+            "Apply next smallest in-scope fix only when still within risk budget.",
+            "Skip this cycle if no additional safe fix remains."
+          ],
+          "expected_evidence": [
+            "Optional cycle-2 change entry with rationale.",
+            "Reasoned skip note when cycle 2 is not executed."
+          ],
+          "done_when": [
+            "Second cycle decision is explicit and justified."
+          ]
+        },
+        {
+          "id": "S06",
+          "title": "Fix cycle 2 validation (if executed)",
+          "actions": [
+            "Run relevant validation for cycle 2 edits.",
+            "Record outcomes with same structure as cycle 1."
+          ],
+          "expected_evidence": [
+            "Cycle-2 validation status or explicit N/A.",
+            "Consistent validation reporting format."
+          ],
+          "done_when": [
+            "All executed fix cycles have verification evidence."
+          ]
+        },
+        {
+          "id": "S07",
+          "title": "Consolidated checks: Best-effort rerun snapshot",
+          "actions": [
+            "Refresh and run relevant best-effort checks after micro-fix cycles.",
+            "Capture any newly surfaced or remaining failures."
+          ],
+          "expected_evidence": [
+            "Post-fix check snapshot.",
+            "Resolved vs remaining issue split."
+          ],
+          "done_when": [
+            "Post-fix status is clear for closure decision."
+          ]
+        },
+        {
+          "id": "S08",
+          "title": "Diff hygiene and scope audit",
+          "actions": [
+            "Ensure final change set stays minimal, deduplicated, and in-scope.",
+            "Highlight any blocked high-risk items intentionally left untouched."
+          ],
+          "expected_evidence": [
+            "Final changed-file ledger.",
+            "Scope-compliance and minimality confirmation."
+          ],
+          "done_when": [
+            "No accidental spillover changes remain."
+          ]
+        },
+        {
+          "id": "S09",
+          "title": "Finalize fixing report and handoff",
+          "actions": [
+            "Write deterministic report with what changed, what passed, and what remains.",
+            "Provide safe next iterative actions for unresolved items."
+          ],
+          "expected_evidence": [
+            "Final markdown report body.",
+            "Residual-risk and next-iteration section."
+          ],
+          "done_when": [
+            "Fixing report is complete and handoff-ready."
+          ]
+        }
+      ],
+      "verification": [
+        "All edits stayed within story scope and remained minimal.",
+        "At least one post-change validation pass was executed or explicitly blocked.",
+        "Resolved vs remaining issues are clearly split.",
+        "Residual risks and safe next actions are documented."
+      ],
+      "out_of_scope": [
+        "Broad architecture or security redesign.",
+        "Large refactors not required by acceptance criteria.",
+        "Any change outside declared story scope patterns.",
+        "Unvalidated changes with unclear impact."
+      ]
+    },
+    {
+      "id": "FIX-002",
+      "title": "Safe Script And Config Hygiene Fixes",
+      "priority": 21,
+      "mode": "fixing",
+      "scope": [
+        "**/*.sh",
+        "**/*.bash",
+        "**/*.yml",
+        "**/*.yaml",
+        "**/*.toml",
+        "**/*.json",
+        "Makefile"
+      ],
+      "acceptance_criteria": [
+        "Created .codex/ralph-audit/audit/FIX-002-script-config-hygiene.md with applied safe hygiene fixes",
+        "Changes remain minimal and non-behavioral wherever possible",
+        "Report includes before/after rationale and residual risks"
+      ],
+      "passes": false,
+      "notes": "No auth/security architecture changes. Detailed execution plan is defined via objective/steps/verification/out_of_scope.",
+      "objective": "Run fixing iteratively in micro-fix cycles for 'Safe Script And Config Hygiene Fixes', prioritizing minimal risk, strict scope, and validated closure.",
+      "steps": [
+        {
+          "id": "S01",
+          "title": "Preflight: Select smallest fix slice",
+          "actions": [
+            "Choose the minimal high-confidence defect slice for FIX-002.",
+            "Defer larger or ambiguous changes to later iterations."
+          ],
+          "expected_evidence": [
+            "Scoped micro-fix target list.",
+            "Rationale for deferred items."
+          ],
+          "done_when": [
+            "Planned fix batch is intentionally small and safe."
+          ]
+        },
+        {
+          "id": "S02",
+          "title": "Boundary gate: Scope and risk constraints",
+          "actions": [
+            "Reconfirm allowed edit scope: **/*.sh, **/*.bash, **/*.yml, **/*.yaml, **/*.toml, **/*.json.",
+            "Lock out broad refactors and architecture/security redesign work."
+          ],
+          "expected_evidence": [
+            "Scope/risk gate statement.",
+            "Explicit non-goals for this fix iteration."
+          ],
+          "done_when": [
+            "Edit boundary is precise before making changes."
+          ]
+        },
+        {
+          "id": "S03",
+          "title": "Fix cycle 1: Apply first micro-change",
+          "actions": [
+            "Apply the first script/config hygiene micro-fix with minimal behavioral impact.",
+            "Preserve existing architecture and avoid unrelated cleanup."
+          ],
+          "expected_evidence": [
+            "Changed file and short rationale for cycle 1.",
+            "No out-of-scope edits in cycle 1."
+          ],
+          "done_when": [
+            "First defect slice is resolved or explicitly blocked."
+          ]
+        },
+        {
+          "id": "S04",
+          "title": "Fix cycle 1 validation",
+          "actions": [
+            "Run targeted check(s) for the first change.",
+            "Capture pass/fail outcome and residual observations."
+          ],
+          "expected_evidence": [
+            "Validation result for cycle 1.",
+            "Residual note if not fully resolved."
+          ],
+          "done_when": [
+            "Cycle 1 has explicit verification evidence."
+          ]
+        },
+        {
+          "id": "S05",
+          "title": "Fix cycle 2: Apply second micro-change (if needed)",
+          "actions": [
+            "Apply next smallest in-scope fix only when still within risk budget.",
+            "Skip this cycle if no additional safe fix remains."
+          ],
+          "expected_evidence": [
+            "Optional cycle-2 change entry with rationale.",
+            "Reasoned skip note when cycle 2 is not executed."
+          ],
+          "done_when": [
+            "Second cycle decision is explicit and justified."
+          ]
+        },
+        {
+          "id": "S06",
+          "title": "Fix cycle 2 validation (if executed)",
+          "actions": [
+            "Run relevant validation for cycle 2 edits.",
+            "Record outcomes with same structure as cycle 1."
+          ],
+          "expected_evidence": [
+            "Cycle-2 validation status or explicit N/A.",
+            "Consistent validation reporting format."
+          ],
+          "done_when": [
+            "All executed fix cycles have verification evidence."
+          ]
+        },
+        {
+          "id": "S07",
+          "title": "Consolidated checks: Best-effort rerun snapshot",
+          "actions": [
+            "Refresh and run relevant best-effort checks after micro-fix cycles.",
+            "Capture any newly surfaced or remaining failures."
+          ],
+          "expected_evidence": [
+            "Post-fix check snapshot.",
+            "Resolved vs remaining issue split."
+          ],
+          "done_when": [
+            "Post-fix status is clear for closure decision."
+          ]
+        },
+        {
+          "id": "S08",
+          "title": "Diff hygiene and scope audit",
+          "actions": [
+            "Ensure final change set stays minimal, deduplicated, and in-scope.",
+            "Highlight any blocked high-risk items intentionally left untouched."
+          ],
+          "expected_evidence": [
+            "Final changed-file ledger.",
+            "Scope-compliance and minimality confirmation."
+          ],
+          "done_when": [
+            "No accidental spillover changes remain."
+          ]
+        },
+        {
+          "id": "S09",
+          "title": "Finalize fixing report and handoff",
+          "actions": [
+            "Write deterministic report with what changed, what passed, and what remains.",
+            "Provide safe next iterative actions for unresolved items."
+          ],
+          "expected_evidence": [
+            "Final markdown report body.",
+            "Residual-risk and next-iteration section."
+          ],
+          "done_when": [
+            "Fixing report is complete and handoff-ready."
+          ]
+        }
+      ],
+      "verification": [
+        "All edits stayed within story scope and remained minimal.",
+        "At least one post-change validation pass was executed or explicitly blocked.",
+        "Resolved vs remaining issues are clearly split.",
+        "Residual risks and safe next actions are documented."
+      ],
+      "out_of_scope": [
+        "Broad architecture or security redesign.",
+        "Large refactors not required by acceptance criteria.",
+        "Any change outside declared story scope patterns.",
+        "Unvalidated changes with unclear impact."
+      ]
+    },
+    {
+      "id": "FIX-003",
+      "title": "Post-Fix Best-Effort Validation And Closure",
+      "priority": 22,
+      "mode": "fixing",
+      "scope": [
+        "**/*"
+      ],
+      "acceptance_criteria": [
+        "Created .codex/ralph-audit/audit/FIX-003-post-fix-validation.md with post-fix validation summary",
+        "Best-effort checks are rerun and outcomes documented",
+        "Report clearly lists remaining known issues and next safe actions"
+      ],
+      "passes": false,
+      "notes": "Focused closure. No broad refactors. Detailed execution plan is defined via objective/steps/verification/out_of_scope.",
+      "objective": "Run fixing iteratively in micro-fix cycles for 'Post-Fix Best-Effort Validation And Closure', prioritizing minimal risk, strict scope, and validated closure.",
+      "steps": [
+        {
+          "id": "S01",
+          "title": "Preflight: Select smallest fix slice",
+          "actions": [
+            "Choose the minimal high-confidence defect slice for FIX-003.",
+            "Defer larger or ambiguous changes to later iterations."
+          ],
+          "expected_evidence": [
+            "Scoped micro-fix target list.",
+            "Rationale for deferred items."
+          ],
+          "done_when": [
+            "Planned fix batch is intentionally small and safe."
+          ]
+        },
+        {
+          "id": "S02",
+          "title": "Boundary gate: Scope and risk constraints",
+          "actions": [
+            "Reconfirm allowed edit scope: **/*.",
+            "Lock out broad refactors and architecture/security redesign work."
+          ],
+          "expected_evidence": [
+            "Scope/risk gate statement.",
+            "Explicit non-goals for this fix iteration."
+          ],
+          "done_when": [
+            "Edit boundary is precise before making changes."
+          ]
+        },
+        {
+          "id": "S03",
+          "title": "Fix cycle 1: Apply first micro-change",
+          "actions": [
+            "Implement first minimal fix directly tied to concrete evidence.",
+            "Keep diff focused and avoid unrelated churn."
+          ],
+          "expected_evidence": [
+            "Changed file and short rationale for cycle 1.",
+            "No out-of-scope edits in cycle 1."
+          ],
+          "done_when": [
+            "First defect slice is resolved or explicitly blocked."
+          ]
+        },
+        {
+          "id": "S04",
+          "title": "Fix cycle 1 validation",
+          "actions": [
+            "Run targeted check(s) for the first change.",
+            "Capture pass/fail outcome and residual observations."
+          ],
+          "expected_evidence": [
+            "Validation result for cycle 1.",
+            "Residual note if not fully resolved."
+          ],
+          "done_when": [
+            "Cycle 1 has explicit verification evidence."
+          ]
+        },
+        {
+          "id": "S05",
+          "title": "Fix cycle 2: Apply second micro-change (if needed)",
+          "actions": [
+            "Apply next smallest in-scope fix only when still within risk budget.",
+            "Skip this cycle if no additional safe fix remains."
+          ],
+          "expected_evidence": [
+            "Optional cycle-2 change entry with rationale.",
+            "Reasoned skip note when cycle 2 is not executed."
+          ],
+          "done_when": [
+            "Second cycle decision is explicit and justified."
+          ]
+        },
+        {
+          "id": "S06",
+          "title": "Fix cycle 2 validation (if executed)",
+          "actions": [
+            "Run relevant validation for cycle 2 edits.",
+            "Record outcomes with same structure as cycle 1."
+          ],
+          "expected_evidence": [
+            "Cycle-2 validation status or explicit N/A.",
+            "Consistent validation reporting format."
+          ],
+          "done_when": [
+            "All executed fix cycles have verification evidence."
+          ]
+        },
+        {
+          "id": "S07",
+          "title": "Consolidated checks: Best-effort rerun snapshot",
+          "actions": [
+            "Re-run relevant best-effort checks after applied fixes and capture deltas.",
+            "Split outcomes into resolved issues vs still-open issues with evidence."
+          ],
+          "expected_evidence": [
+            "Post-fix check snapshot.",
+            "Resolved vs remaining issue split."
+          ],
+          "done_when": [
+            "Post-fix status is clear for closure decision."
+          ]
+        },
+        {
+          "id": "S08",
+          "title": "Diff hygiene and scope audit",
+          "actions": [
+            "Ensure final change set stays minimal, deduplicated, and in-scope.",
+            "Highlight any blocked high-risk items intentionally left untouched."
+          ],
+          "expected_evidence": [
+            "Final changed-file ledger.",
+            "Scope-compliance and minimality confirmation."
+          ],
+          "done_when": [
+            "No accidental spillover changes remain."
+          ]
+        },
+        {
+          "id": "S09",
+          "title": "Finalize closure report and next iteration handoff",
+          "actions": [
+            "Write closure report with resolved items, remaining issues, and confidence notes.",
+            "Provide strictly safe, ordered next actions for unresolved items."
+          ],
+          "expected_evidence": [
+            "Final markdown report body.",
+            "Residual-risk and next-iteration section."
+          ],
+          "done_when": [
+            "Fixing report is complete and handoff-ready."
+          ]
+        }
+      ],
+      "verification": [
+        "All edits stayed within story scope and remained minimal.",
+        "At least one post-change validation pass was executed or explicitly blocked.",
+        "Resolved vs remaining issues are clearly split.",
+        "Residual risks and safe next actions are documented."
+      ],
+      "out_of_scope": [
+        "Broad architecture or security redesign.",
+        "Large refactors not required by acceptance criteria.",
+        "Any change outside declared story scope patterns.",
+        "Unvalidated changes with unclear impact."
+      ]
+    }
+  ]
+}
