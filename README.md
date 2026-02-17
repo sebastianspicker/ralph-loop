@@ -250,4 +250,4 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## License
 
-MIT-style template license in [`LICENSE`](LICENSE).
+MIT. See [`LICENSE`](LICENSE).
