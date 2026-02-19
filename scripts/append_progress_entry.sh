@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+# shellcheck source=scripts/lib/parse_opts.sh
+source "$SCRIPT_DIR/lib/parse_opts.sh"
 
 OUT_FILE="$ROOT_DIR/progress.log.md"
 STORY_ID=""
@@ -22,27 +24,27 @@ USAGE
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --story)
-      [[ $# -ge 2 ]] || { printf 'missing value for --story\n' >&2; exit 1; }
+      [[ $# -ge 2 ]] || usage_exit "missing value for --story"
       STORY_ID="$2"
       shift 2
       ;;
     --mode)
-      [[ $# -ge 2 ]] || { printf 'missing value for --mode\n' >&2; exit 1; }
+      [[ $# -ge 2 ]] || usage_exit "missing value for --mode"
       MODE="$2"
       shift 2
       ;;
     --title)
-      [[ $# -ge 2 ]] || { printf 'missing value for --title\n' >&2; exit 1; }
+      [[ $# -ge 2 ]] || usage_exit "missing value for --title"
       TITLE="$2"
       shift 2
       ;;
     --report)
-      [[ $# -ge 2 ]] || { printf 'missing value for --report\n' >&2; exit 1; }
+      [[ $# -ge 2 ]] || usage_exit "missing value for --report"
       REPORT="$2"
       shift 2
       ;;
     --out)
-      [[ $# -ge 2 ]] || { printf 'missing value for --out\n' >&2; exit 1; }
+      [[ $# -ge 2 ]] || usage_exit "missing value for --out"
       OUT_FILE="$2"
       shift 2
       ;;
@@ -51,17 +53,15 @@ while [[ $# -gt 0 ]]; do
       exit 0
       ;;
     *)
-      printf 'unknown argument: %s\n' "$1" >&2
-      usage >&2
-      exit 1
+      unknown_opt "$1"
       ;;
   esac
 done
 
-[[ -n "$STORY_ID" ]] || { printf 'missing required --story\n' >&2; exit 1; }
-[[ -n "$MODE" ]] || { printf 'missing required --mode\n' >&2; exit 1; }
-[[ -n "$TITLE" ]] || { printf 'missing required --title\n' >&2; exit 1; }
-[[ -n "$REPORT" ]] || { printf 'missing required --report\n' >&2; exit 1; }
+[[ -n "$STORY_ID" ]] || usage_exit "missing required --story"
+[[ -n "$MODE" ]] || usage_exit "missing required --mode"
+[[ -n "$TITLE" ]] || usage_exit "missing required --title"
+[[ -n "$REPORT" ]] || usage_exit "missing required --report"
 
 mkdir -p "$(dirname "$OUT_FILE")"
 if [[ ! -f "$OUT_FILE" ]]; then

@@ -84,11 +84,25 @@ RALPH_AUTO_ARCHIVE_ON_PROJECT_CHANGE=true ./ralph.sh 0
 
 ## Branch Sync From PRD
 
-If PRD includes `branch_name` (or `branchName`), enable branch sync:
+When `RALPH_SYNC_BRANCH_FROM_PRD=true`, the runner syncs the current git branch to the value in `prd.json` (`branch_name` or `branchName`). If the target branch already exists, the runner checks it out; if it does not exist, the runner creates it (from the default base branch, or from the current HEAD). Use this to keep the working branch aligned with the PRD before running stories.
 
 ```bash
 RALPH_SYNC_BRANCH_FROM_PRD=true ./ralph.sh 0
 ```
+
+## Embedding This Template
+
+To embed the Ralph Audit template into another repository:
+
+1. Run the bootstrap script from this template repo:  
+   `./scripts/bootstrap_embedded.sh /absolute/path/to/target-repo`  
+   Use `--force` to overwrite an existing `.codex/ralph-audit` and `--with-tests` to copy tests.
+2. In the target repo, add or adjust `prd.json` (e.g. copy from `.codex/ralph-audit/prd.json.example`). Set `defaults.report_dir` as needed (default: `.codex/ralph-audit/audit`).
+3. From the **target repository root**, run the embedded runner:  
+   `./.codex/ralph-audit/ralph.sh [N]`  
+   with `MODE=audit`, `MODE=linting`, or `MODE=fixing` as required.
+
+Reports and runtime state live under `.codex/ralph-audit/` and `.codex/ralph-audit/.runtime/` in the target repo.
 
 ## Incident Triage Checklist
 

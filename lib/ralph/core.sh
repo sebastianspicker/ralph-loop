@@ -43,6 +43,10 @@ Options:
   --timeout-seconds <secs>   Per-story timeout (default: 900, 0 = disabled)
   --strict-report-dir        Require Created report path under defaults.report_dir (default)
   --no-strict-report-dir     Allow Created report path outside defaults.report_dir for new files
+  -q, --quiet                Only errors and final summary
+  -v, --verbose              More per-story output
+  --validate-prd             Validate PRD only and exit
+  --list-stories             List open stories for current mode and exit
   -h, --help                 Show this help
 
 Environment:
@@ -78,10 +82,14 @@ Environment:
   RALPH_AUTO_PROGRESS_REFRESH true|false, default true
   RALPH_STALE_LOCK_NO_PID_SECONDS
                               Seconds before a lock dir without valid pid is considered stale (default: 30)
+  RALPH_VERBOSITY             normal|quiet|verbose (default: normal). Use -q/-v for quiet/verbose.
+
+For details and troubleshooting: docs/configuration.md, docs/operations.md
 USAGE
 }
 
 log() {
+  [[ "${RALPH_VERBOSITY:-normal}" == "quiet" ]] && return 0
   printf '[ralph] %s\n' "$*"
 }
 
@@ -93,7 +101,18 @@ log_event() {
 
 fail() {
   local msg="$1"
-  printf '[ralph][ERROR] %s\n' "$msg" >&2
+  local hint="${2:-}"
+  local red="" reset=""
+  if [[ -t 2 ]] && [[ "${RALPH_VERBOSITY:-normal}" != "quiet" ]]; then
+    red='\033[0;31m'
+    reset='\033[0m'
+  fi
+  printf '%s[ralph][ERROR] %s%s\n' "$red" "$msg" "$reset" >&2
+  if [[ -n "$hint" ]]; then
+    printf '[ralph] %s\n' "$hint" >&2
+  else
+    printf '[ralph] See docs/operations.md for troubleshooting.\n' >&2
+  fi
   if [[ -n "${EVENT_LOG:-}" ]]; then
     log_event "ERROR $msg"
   fi

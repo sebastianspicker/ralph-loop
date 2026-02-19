@@ -17,7 +17,9 @@ This document describes CLI flags and environment variables supported by `ralph.
   [--model <model-id>] \
   [--reasoning-effort <low|medium|high>] \
   [--timeout-seconds <seconds>] \
-  [--strict-report-dir|--no-strict-report-dir]
+  [--strict-report-dir|--no-strict-report-dir] \
+  [-q|--quiet] [-v|--verbose] \
+  [--validate-prd] [--list-stories]
 ```
 
 ## Resolution Order
@@ -82,9 +84,19 @@ This document describes CLI flags and environment variables supported by `ralph.
 - `RALPH_AUTO_PROGRESS_REFRESH`: refresh `progress.txt` if file exists
 - `RALPH_AUTO_SYNC_AGENTS_FROM_LEARNINGS`: sync latest learning note into `AGENTS.md`
 
+### Output and helpers
+
+- `RALPH_VERBOSITY`: `normal|quiet|verbose` (or use `-q` / `-v`). Quiet: only errors and final summary; verbose: more per-story output.
+- `--validate-prd`: validate PRD and exit without running stories.
+- `--list-stories`: list open stories for the current mode (id, priority, mode, title) and exit.
+
 ### Diagnostics
 
 - `RALPH_CAPTURE_CODEX_OUTPUT`: capture redacted tool stdout/stderr into `.runtime/run.log`
+
+## Report directory
+
+- `defaults.report_dir` in `prd.json` defines the default directory for story reports. The runner resolves it at startup and exposes it as `DEFAULT_REPORT_DIR` in config; each story’s report path is taken from its acceptance criterion (`Created <path>.md ...`) and must lie under this directory when strict report dir is enabled.
 
 ## Notes on `progress.txt`
 

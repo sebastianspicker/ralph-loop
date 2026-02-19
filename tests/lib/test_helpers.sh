@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Shared test bootstrap. Each test should source this with:
+#   source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/test_helpers.sh"
+# so TESTS_DIR, ROOT_DIR, and helpers (require_cmd, fail_case, etc.) are available.
 
 TESTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ROOT_DIR="$(cd "$TESTS_DIR/.." && pwd)"

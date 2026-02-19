@@ -34,6 +34,7 @@ LOCK_STALE_NO_PID_SECONDS="${RALPH_STALE_LOCK_NO_PID_SECONDS:-30}"
 STRICT_REPORT_DIR="${RALPH_STRICT_REPORT_DIR:-true}"
 FIXING_STATE_METHOD="${RALPH_FIXING_STATE_METHOD:-auto}"
 AUTO_PROGRESS_REFRESH="${RALPH_AUTO_PROGRESS_REFRESH:-true}"
+RALPH_VERBOSITY="${RALPH_VERBOSITY:-normal}"
 SUPPORTED_MODES_JSON='["audit","linting","fixing"]'
 SUPPORTED_MODES_HINT='audit | linting | fixing'
 SUPPORTED_TOOLS_HINT='codex'
@@ -64,6 +65,8 @@ MAX_STORIES_DEFAULT="all_open"
 
 processed=0
 passed=0
+VALIDATE_PRD_ONLY="false"
+LIST_STORIES_ONLY="false"
 
 TMP_FILES=()
 DETECTED_CHECKS=()
@@ -125,6 +128,26 @@ main() {
   resolve_repo_root
   REPO_ROOT_REAL="$(cd "$REPO_ROOT" && pwd -P)"
   resolve_paths
+
+  if [[ "$VALIDATE_PRD_ONLY" == "true" ]]; then
+    validate_prd_structure
+    log "PRD validation passed."
+    exit 0
+  fi
+
+  if [[ "$LIST_STORIES_ONLY" == "true" ]]; then
+    validate_prd_structure
+    load_default_report_dir
+    apply_prd_runtime_defaults
+    finalize_runtime_config
+    jq -r --arg mode "$MODE" '
+      [.stories[] | select(.mode == $mode and ((.passes // false) == false) and ((.skipped // false) == false))]
+      | sort_by(.priority, .id)
+      | .[] | "\(.id)\t\(.priority)\t\(.mode)\t\(.title)"
+    ' "$PRD_FILE" 2>/dev/null
+    exit 0
+  fi
+
   detect_stat_flavor
   acquire_run_lock
   run_security_preflight_check
@@ -175,6 +198,9 @@ main() {
     fi
 
     processed=$((processed + 1))
+    if [[ "${RALPH_VERBOSITY:-normal}" != "quiet" ]]; then
+      log "Processing story $processed/$MAX_STORIES ($story_id)"
+    fi
     if process_story "$story_id"; then
       passed=$((passed + 1))
     else
@@ -190,6 +216,9 @@ main() {
   log_event "RUN_END processed=$processed passed=$passed remaining=$remaining mode=$MODE tool=$TOOL"
   if [[ "$remaining" -eq 0 ]]; then
     printf '<promise>COMPLETE</promise>\n'
+    if [[ "${RALPH_VERBOSITY:-normal}" != "quiet" ]]; then
+      log "All stories complete."
+    fi
   fi
 }
 

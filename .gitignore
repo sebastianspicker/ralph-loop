@@ -12,3 +12,7 @@ progress.txt
 .model-check.log
 run.log
 events.log
+
+# Local editor/OS backups
+*.bak
+*~

@@ -68,7 +68,7 @@ if [[ -e "$DEST" && "$FORCE" != "true" ]]; then
 fi
 
 rm -rf "$DEST"
-mkdir -p "$DEST/lib/ralph" "$DEST/scripts" "$DEST/docs" "$DEST/skills/prd" "$DEST/skills/ralph"
+mkdir -p "$DEST/lib/ralph" "$DEST/scripts/lib" "$DEST/docs" "$DEST/skills/prd" "$DEST/skills/ralph"
 
 copy_file() {
   local rel="$1"
@@ -96,6 +96,7 @@ copy_file "scripts/record_learning.sh"
 copy_file "scripts/archive_run_state.sh"
 copy_file "scripts/append_progress_entry.sh"
 copy_file "scripts/sync_agents_from_learnings.sh"
+copy_file "scripts/lib/parse_opts.sh"
 copy_file "skills/prd/SKILL.md"
 copy_file "skills/ralph/SKILL.md"
 
